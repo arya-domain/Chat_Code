@@ -576,7 +576,7 @@
                     </select>
                 </div>
                 <label class="theme-toggle">
-                    <input type="checkbox" id="darkModeToggle">
+                    <input type="checkbox" id="darkModeToggle" checked>
                     <span>Dark Mode</span>
                     <div>
                         <button id="downloadBtn" class="download-btn">Download Chat</button>
@@ -613,6 +613,17 @@
     </div>
 
     <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const toggle = document.getElementById("darkModeToggle");
+            if (toggle.checked) {
+                document.body.classList.add("dark-mode");
+            }
+
+            toggle.addEventListener("change", function () {
+                document.body.classList.toggle("dark-mode", this.checked);
+            });
+        });
+        
         // Application state
         let conversation = [];
         let imageBlob = null;
