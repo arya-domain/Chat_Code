@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Puter.js AI Chat with Markdown</title>
+    <title>Puter.js AI Chat</title>
     <script src="https://js.puter.com/v2/"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -12,43 +13,71 @@
             padding: 20px;
             background: #f5f5f5;
         }
+
         .container {
             max-width: 700px;
             margin: auto;
             background: #fff;
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
         }
-        select, input[type="text"], button {
+
+        select,
+        input[type="text"],
+        button {
             padding: 10px;
             margin: 10px 0;
             width: 100%;
             font-size: 16px;
         }
+
         #response {
-            background: #f0f0f0;
+            white-space: pre-wrap;
+            background: #eee;
             padding: 15px;
             border-radius: 6px;
             margin-top: 10px;
             min-height: 100px;
-            overflow-x: auto;
         }
-        pre {
-            background: #2d2d2d;
+
+        /* Markdown Styling */
+        #response h1,
+        #response h2,
+        #response h3 {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #response p {
+            margin: 10px 0;
+        }
+
+        #response code {
+            background: #eaeaea;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        #response pre {
+            background: #272822;
             color: #f8f8f2;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 6px;
             overflow-x: auto;
         }
-        code {
-            font-family: Consolas, monospace;
+
+        #response ul {
+            padding-left: 20px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Puter.js AI Chat Interface</h2>
+
         <label for="model">Choose a model:</label>
         <select id="model">
             <option value="gpt-4o">gpt-4o</option>
@@ -80,20 +109,24 @@
             const prompt = document.getElementById("prompt").value;
             const responseDiv = document.getElementById("response");
 
-            responseDiv.innerHTML = "<em>Loading...</em>";
+            responseDiv.textContent = "Loading...";
 
             try {
                 const result = await puter.ai.chat(prompt, { model });
 
-                // Fix: ensure it's a string
-                const text = typeof result === 'string' ? result : result?.text || JSON.stringify(result);
+                // Extract markdown content from the correct field
+                const markdownResponse = result.message.content;
 
-                const html = marked.parse(text);
-                responseDiv.innerHTML = html;
+                // Convert markdown to HTML
+                const htmlResponse = marked.parse(markdownResponse);
+                responseDiv.innerHTML = htmlResponse;
+
             } catch (error) {
-                responseDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                responseDiv.textContent = "Error: " + error.message;
             }
         }
+
     </script>
 </body>
+
 </html>
