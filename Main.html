@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Puter.js AI Chat</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+        select, input[type="text"], button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        #response {
+            white-space: pre-wrap;
+            background: #eee;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Puter.js AI Chat Interface</h2>
+        <label for="model">Choose a model:</label>
+        <select id="model">
+            <option value="gpt-4o">gpt-4o</option>
+            <option value="gpt-4.1">gpt-4.1</option>
+            <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+            <option value="gpt-4.1-nano">gpt-4.1-nano</option>
+            <option value="gpt-4.5-preview">gpt-4.5-preview</option>
+            <option value="gpt-4o-mini">gpt-4o-mini</option>
+            <option value="o1">o1</option>
+            <option value="o1-mini">o1-mini</option>
+            <option value="o1-pro">o1-pro</option>
+            <option value="o3">o3</option>
+            <option value="o3-mini">o3-mini</option>
+            <option value="o4-mini">o4-mini</option>
+        </select>
+
+        <label for="prompt">Enter your prompt:</label>
+        <input type="text" id="prompt" placeholder="Type your message here..." />
+
+        <button onclick="sendPrompt()">Send</button>
+
+        <h3>Model Response:</h3>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        async function sendPrompt() {
+            const model = document.getElementById("model").value;
+            const prompt = document.getElementById("prompt").value;
+            const responseDiv = document.getElementById("response");
+
+            responseDiv.textContent = "Loading...";
+
+            try {
+                const response = await puter.ai.chat(prompt, { model });
+                responseDiv.textContent = response;
+            } catch (error) {
+                responseDiv.textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
