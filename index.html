@@ -756,12 +756,12 @@
                 }
 
                 // Send to AI
-                if (imageUrl) {
-                    const result = await puter.ai.chat(text, imageUrl);
-                    console.log(result)
+                let result = undefined;
+                if (imageInput !== undefined) {
+                    result = await puter.ai.chat(text, imageUrl);
                 }
-                else if (!imageUrl) {
-                    const result = await puter.ai.chat(conversation, {
+                else {
+                    result = await puter.ai.chat(conversation, {
                         model: elements.model.value,
                         image: imageInput,
                     });
