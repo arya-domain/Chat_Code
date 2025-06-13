@@ -657,8 +657,9 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
+
         function loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             const isDark = savedTheme === 'dark';
             elements.darkModeToggle.checked = isDark;
             document.body.setAttribute('data-theme', savedTheme);
@@ -758,7 +759,8 @@
                 // Send to AI
                 let result = undefined;
                 if (imageInput !== undefined) {
-                    result = await puter.ai.chat(text, imageUrl);
+                    result = await puter.ai.chat(text, imageInput);
+                    console.log(result)
                 }
                 else {
                     result = await puter.ai.chat(conversation, {
