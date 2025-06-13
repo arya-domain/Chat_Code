@@ -613,17 +613,7 @@
     </div>
 
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            const toggle = document.getElementById("darkModeToggle");
-            if (toggle.checked) {
-                document.body.classList.add("dark-mode");
-            }
 
-            toggle.addEventListener("change", function () {
-                document.body.classList.toggle("dark-mode", this.checked);
-            });
-        });
-        
         // Application state
         let conversation = [];
         let imageBlob = null;
@@ -766,10 +756,17 @@
                 }
 
                 // Send to AI
-                const result = await puter.ai.chat(conversation, {
-                    model: elements.model.value,
-                    image: imageInput,
-                });
+                if (imageUrl) {
+                    const result = await puter.ai.chat(text, imageUrl);
+                    console.log(result)
+                }
+                else if (!imageUrl) {
+                    const result = await puter.ai.chat(conversation, {
+                        model: elements.model.value,
+                        image: imageInput,
+                    });
+                }
+
 
                 // Process response
                 let reply = processAIResponse(result);
@@ -796,7 +793,7 @@
 
         function processAIResponse(result) {
             if (Array.isArray(result.message.content)) {
-                if (result.message.content[0]?.text) {
+                if (result.message.content[0]) {
                     return result.message.content.map(c => c.text).join('\n\n');
                 } else {
                     return result.message.content.join('\n\n');
