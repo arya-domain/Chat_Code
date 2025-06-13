@@ -55,7 +55,7 @@
         .app-container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -541,7 +541,7 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <h1>🤖 Puter.js Chat</h1>
+            <h1>🤖 Chat All</h1>
             <div class="controls-grid">
                 <div class="model-select">
                     <select id="model">
@@ -885,7 +885,7 @@
             const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
             const modelName = elements.model.value;
 
-            let markdown = `# Puter.js Chat Export\n\n`;
+            let markdown = `# Chat All Export\n\n`;
             markdown += `**Date:** ${new Date().toLocaleString()}\n`;
             markdown += `**Model:** ${modelName}\n\n`;
             markdown += `---\n\n`;
@@ -902,7 +902,7 @@
 
             // Add export footer
             markdown += `\n---\n\n`;
-            markdown += `*Chat exported from Puter.js Chat Interface*\n`;
+            markdown += `*Chat exported from Chat All Interface*\n`;
             markdown += `*Export time: ${new Date().toLocaleString()}*`;
 
             // Create and download file
