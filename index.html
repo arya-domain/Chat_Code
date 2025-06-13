@@ -83,11 +83,15 @@
             responseDiv.innerHTML = "<em>Loading...</em>";
 
             try {
-                const response = await puter.ai.chat(prompt, { model });
-                const html = marked.parse(response);
+                const result = await puter.ai.chat(prompt, { model });
+
+                // Fix: ensure it's a string
+                const text = typeof result === 'string' ? result : result?.text || JSON.stringify(result);
+
+                const html = marked.parse(text);
                 responseDiv.innerHTML = html;
             } catch (error) {
-                responseDiv.innerHTML = "<strong>Error:</strong> " + error.message;
+                responseDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
             }
         }
     </script>
