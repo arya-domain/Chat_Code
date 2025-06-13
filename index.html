@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Puter.js AI Chat</title>
+    <title>Puter.js AI Chat with Markdown</title>
     <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,12 +27,22 @@
             font-size: 16px;
         }
         #response {
-            white-space: pre-wrap;
-            background: #eee;
+            background: #f0f0f0;
             padding: 15px;
             border-radius: 6px;
             margin-top: 10px;
             min-height: 100px;
+            overflow-x: auto;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, monospace;
         }
     </style>
 </head>
@@ -69,13 +80,14 @@
             const prompt = document.getElementById("prompt").value;
             const responseDiv = document.getElementById("response");
 
-            responseDiv.textContent = "Loading...";
+            responseDiv.innerHTML = "<em>Loading...</em>";
 
             try {
                 const response = await puter.ai.chat(prompt, { model });
-                responseDiv.textContent = response;
+                const html = marked.parse(response);
+                responseDiv.innerHTML = html;
             } catch (error) {
-                responseDiv.textContent = "Error: " + error.message;
+                responseDiv.innerHTML = "<strong>Error:</strong> " + error.message;
             }
         }
     </script>
