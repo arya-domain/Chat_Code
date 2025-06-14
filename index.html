@@ -535,6 +535,232 @@
                 width: 100%;
             }
         }
+
+        /* Restore Chat Button Styles */
+        .restore-btn {
+            padding: 8px 16px;
+            background: var(--warning-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .restore-btn:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .restore-btn:active {
+            transform: translateY(0);
+        }
+
+        .restore-btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* File input for restore functionality */
+        .restore-file-input {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
+
+        /* Restore notification styles */
+        .restore-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .restore-notification.error {
+            background: var(--danger-color);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        /* Chat restore confirmation modal */
+        .restore-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .restore-modal-content {
+            background: var(--bg-primary);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .restore-modal h3 {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .restore-modal p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .restore-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .restore-modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 80px;
+        }
+
+        .restore-modal-btn.confirm {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .restore-modal-btn.confirm:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+        }
+
+        .restore-modal-btn.cancel {
+            background: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .restore-modal-btn.cancel:hover {
+            background: var(--text-secondary);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Chat restored indicator */
+        .chat-restored-indicator {
+            background: var(--warning-color);
+            color: white;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+            animation: pulse 2s ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Update header actions for better spacing */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive design updates for restore button */
+        @media (max-width: 768px) {
+            .header-actions {
+                flex-direction: column;
+                gap: 12px;
+                width: 100%;
+            }
+
+            .restore-btn,
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .restore-modal-content {
+                margin: 20px;
+                width: calc(100% - 40px);
+            }
+
+            .restore-modal-actions {
+                flex-direction: column;
+            }
+
+            .restore-modal-btn {
+                width: 100%;
+            }
+
+            .restore-notification {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+        }
     </style>
 </head>
 
@@ -575,19 +801,26 @@
                         <option value="grok-beta">Grok Beta</option>
                     </select>
                 </div>
-                <label class="theme-toggle">
-                    <input type="checkbox" id="darkModeToggle" checked>
-                    <span>Dark Mode</span>
-                    <div>
-                        <button id="downloadBtn" class="download-btn">Download Chat</button>
-                    </div>
-                </label>
-
+                <div class="header-actions">
+                    <input type="file" id="restoreFileInput" class="restore-file-input" accept=".md,.txt" />
+                    <button id="restoreBtn" class="restore-btn">
+                        📂 Restore Chat
+                    </button>
+                    <button id="downloadBtn" class="download-btn">
+                        💾 Download Chat
+                    </button>
+                    <label class="theme-toggle">
+                        <input type="checkbox" id="darkModeToggle" checked>
+                        <span>Dark Mode</span>
+                    </label>
+                </div>
             </div>
         </div>
 
         <div class="chat-container">
-            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Chat restored indicator will be inserted here when needed -->
+            </div>
 
             <div class="input-section">
                 <div class="image-upload-section">
@@ -598,7 +831,6 @@
                         </label>
                     </div>
                     <input type="text" id="imageUrlInput" class="url-input" placeholder="Or paste image URL">
-
                 </div>
 
                 <img id="imagePreview" class="image-preview" style="display: none;">
@@ -612,13 +844,29 @@
         </div>
     </div>
 
-    <script>
+    <!-- Restore Chat Confirmation Modal -->
+    <div id="restoreModal" class="restore-modal" style="display: none;">
+        <div class="restore-modal-content">
+            <h3>⚠️ Restore Chat</h3>
+            <p>This will replace your current conversation. Any unsaved progress will be lost.</p>
+            <p>Do you want to continue?</p>
+            <div class="restore-modal-actions">
+                <button id="confirmRestore" class="restore-modal-btn confirm">Yes, Restore</button>
+                <button id="cancelRestore" class="restore-modal-btn cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Notification container for restore feedback -->
+    <div id="notificationContainer"></div>
+
+    <script>
         // Application state
         let conversation = [];
         let imageBlob = null;
         let imageUrl = null;
         let isLoading = false;
+        let pendingRestoreData = null; // Store file data while waiting for confirmation
 
         // DOM elements
         const elements = {
@@ -630,7 +878,13 @@
             messageInput: document.getElementById('messageInput'),
             sendBtn: document.getElementById('sendBtn'),
             model: document.getElementById('model'),
-            downloadBtn: document.getElementById('downloadBtn')
+            downloadBtn: document.getElementById('downloadBtn'),
+            restoreBtn: document.getElementById('restoreBtn'),
+            restoreFileInput: document.getElementById('restoreFileInput'),
+            restoreModal: document.getElementById('restoreModal'),
+            confirmRestore: document.getElementById('confirmRestore'),
+            cancelRestore: document.getElementById('cancelRestore'),
+            notificationContainer: document.getElementById('notificationContainer')
         };
 
         // Initialize the application
@@ -648,6 +902,19 @@
             elements.sendBtn.addEventListener('click', sendMessage);
             elements.messageInput.addEventListener('keydown', handleKeyDown);
             elements.downloadBtn.addEventListener('click', downloadChat);
+
+            // Restore chat event listeners
+            elements.restoreBtn.addEventListener('click', triggerFileSelection);
+            elements.restoreFileInput.addEventListener('change', handleRestoreFile);
+            elements.confirmRestore.addEventListener('click', confirmChatRestore);
+            elements.cancelRestore.addEventListener('click', cancelChatRestore);
+
+            // Modal backdrop click to close
+            elements.restoreModal.addEventListener('click', (e) => {
+                if (e.target === elements.restoreModal) {
+                    cancelChatRestore();
+                }
+            });
         }
 
         // Theme management
@@ -656,7 +923,6 @@
             document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
-
 
         function loadTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -719,6 +985,174 @@
             }
         }
 
+        // Restore Chat Functionality
+        function triggerFileSelection() {
+            elements.restoreFileInput.click();
+        }
+
+        function handleRestoreFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const content = event.target.result;
+                    const parsedData = parseMarkdownChat(content);
+
+                    if (parsedData.length === 0) {
+                        showNotification('No valid conversation found in the file', 'error');
+                        return;
+                    }
+
+                    pendingRestoreData = parsedData;
+
+                    // Show confirmation modal if there's an existing conversation
+                    if (conversation.length > 0) {
+                        elements.restoreModal.style.display = 'flex';
+                    } else {
+                        // No existing conversation, restore directly
+                        confirmChatRestore();
+                    }
+                } catch (error) {
+                    console.error('Error reading file:', error);
+                    showNotification('Error reading the chat file', 'error');
+                }
+            };
+
+            reader.onerror = () => {
+                showNotification('Failed to read the file', 'error');
+            };
+
+            reader.readAsText(file);
+
+            // Reset file input
+            elements.restoreFileInput.value = '';
+        }
+
+        function parseMarkdownChat(content) {
+            const messages = [];
+            const lines = content.split('\n');
+            let currentMessage = null;
+            let inMessageContent = false;
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+
+                // Skip empty lines and metadata
+                if (!line || line.startsWith('**Date:**') || line.startsWith('**Model:**') ||
+                    line.startsWith('*Chat exported') || line.startsWith('*Export time:') ||
+                    line === '---' || line.startsWith('# Chat All Export')) {
+                    continue;
+                }
+
+                // Check for user message
+                if (line.startsWith('## 👤 **User**') || line.includes('**User**')) {
+                    if (currentMessage) {
+                        messages.push(currentMessage);
+                    }
+                    currentMessage = { role: 'user', content: '' };
+                    inMessageContent = true;
+                    continue;
+                }
+
+                // Check for AI message
+                if (line.startsWith('## 🤖 **AI**') || line.includes('**AI**')) {
+                    if (currentMessage) {
+                        messages.push(currentMessage);
+                    }
+                    currentMessage = { role: 'assistant', content: '' };
+                    inMessageContent = true;
+                    continue;
+                }
+
+                // Add content to current message
+                if (inMessageContent && currentMessage) {
+                    if (currentMessage.content) {
+                        currentMessage.content += '\n' + line;
+                    } else {
+                        currentMessage.content = line;
+                    }
+                }
+            }
+
+            // Add the last message
+            if (currentMessage) {
+                messages.push(currentMessage);
+            }
+
+            // Clean up message content
+            return messages.map(msg => ({
+                ...msg,
+                content: msg.content.trim()
+            })).filter(msg => msg.content); // Remove empty messages
+        }
+
+        function confirmChatRestore() {
+            if (!pendingRestoreData) return;
+
+            try {
+                // Clear existing conversation and chat display
+                conversation = [];
+                elements.chatMessages.innerHTML = '';
+
+                // Add restored indicator
+                const indicator = document.createElement('div');
+                indicator.className = 'chat-restored-indicator';
+                indicator.textContent = '🔄 Chat restored from file';
+                elements.chatMessages.appendChild(indicator);
+
+                // Restore messages
+                conversation = [...pendingRestoreData];
+
+                // Display restored messages
+                conversation.forEach(message => {
+                    addMessage(message.role, message.content);
+                });
+
+                // Hide modal and show success notification
+                elements.restoreModal.style.display = 'none';
+                showNotification(`Successfully restored ${conversation.length} messages`, 'success');
+
+                // Clear image inputs
+                clearImage();
+
+                // Clear pending data
+                pendingRestoreData = null;
+
+                // Remove indicator after 3 seconds
+                setTimeout(() => {
+                    if (indicator.parentNode) {
+                        indicator.remove();
+                    }
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error restoring chat:', error);
+                showNotification('Error restoring chat', 'error');
+            }
+        }
+
+        function cancelChatRestore() {
+            elements.restoreModal.style.display = 'none';
+            pendingRestoreData = null;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `restore-notification ${type}`;
+            notification.textContent = message;
+
+            elements.notificationContainer.appendChild(notification);
+
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+
         // Message handling
         async function sendMessage() {
             if (isLoading) return;
@@ -768,7 +1202,6 @@
                         image: imageInput,
                     });
                 }
-
 
                 // Process response
                 let reply = processAIResponse(result);
